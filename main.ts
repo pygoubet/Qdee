@@ -1310,6 +1310,20 @@ export function onQdee_getAngle(servo: Servos,body: Action) {
         }
     }
 
+let blackThreshold = 100
+/**
+ * Set black line detection threshold
+ * @param threshold the threshold of the line sensor in 0~255. eg: 100
+ */
+    //% weight=80 blockId=qdee_setLineFollowerBlackThreshold block="Set line follower black threshold|%threshold"
+    export function qdee_setLineFollowerBlackThreshold(number: threshold): void {
+	if (threshold > 255)
+		threshold = 255;
+        else if (threshold < 0)
+		threshold = 0;
+	blackThreshold = threshold;
+    }
+	 
 /**
 * Get the condition of the line follower sensor
 */
@@ -1324,31 +1338,31 @@ export function onQdee_getAngle(servo: Servos,body: Action) {
                 s2 = pins.analogReadPin(AnalogPin.P2);
                 s1 = s1 * 255 / 1023;
                 s2 = s2 * 255 / 1023;
-                if (s1 < 100)
+                if (s1 < blackThreshold)
                     s1 = 0;
                 else
                     s1 = 1;
-                if (s2 < 100)
+                if (s2 < blackThreshold)
                     s2 = 0;
                 else
                     s2 = 1;     
                 break;
             case lineFollowPort.port6:
-                if (PA6_ad < 100)
+                if (PA6_ad < blackThreshold)
                     s1 = 0;
                 else
                     s1 = 1;
-                if (PA7_ad < 100)
+                if (PA7_ad < blackThreshold)
                     s2 = 0;
                 else
                     s2 = 1;
                 break;  
             case lineFollowPort.port8:
-                if (PB0_ad < 100)
+                if (PB0_ad < blackThreshold)
                     s1 = 0;
                 else
                     s1 = 1;
-                if (PB1_ad < 100)
+                if (PB1_ad < blackThreshold)
                     s2 = 0;
                 else
                     s2 = 1;
